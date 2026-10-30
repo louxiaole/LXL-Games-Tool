@@ -1,0 +1,102 @@
+<UserControl x:Class="LXLGameToolbox.UI.Pages.UpdateLogPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel MaxWidth="760" HorizontalAlignment="Left">
+
+            <StackPanel>
+                <TextBlock Text="更新日志" Style="{StaticResource PageTitleText}"/>
+                <TextBlock Text="工具箱自身的版本记录，可直接在线检查并更新到最新版"
+                           Style="{StaticResource HintText}" Margin="0,6,0,0"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource Card}" Padding="18" Margin="0,16,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="当前版本" FontSize="13" FontWeight="SemiBold"/>
+                            <Border Style="{StaticResource Badge}" Background="{DynamicResource AccentLightBrush}"
+                                    Margin="8,0,0,0">
+                                <TextBlock x:Name="CurrentVersionText" Text="v1.0.0" FontSize="10"
+                                           Foreground="{DynamicResource AccentTextBrush}"/>
+                            </Border>
+                        </StackPanel>
+                        <TextBlock x:Name="StatusText" Text="正在获取线上版本 ..." FontSize="12" Margin="0,8,0,0"
+                                   TextWrapping="Wrap" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="CheckButton" Style="{StaticResource OutlineButton}" Content="检查更新"
+                                Padding="14,7" Click="Check_Click"/>
+                        <Button x:Name="UpdateButton" Style="{StaticResource PrimaryButton}" Content="立即更新"
+                                Padding="16,7" Margin="8,0,0,0" Click="Update_Click" Visibility="Collapsed"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border x:Name="ProgressPanel" Style="{StaticResource FlatCard}" Padding="16" Margin="0,12,0,0"
+                    Visibility="Collapsed">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="ProgressTitle" Text="正在下载更新 ..." FontSize="12" FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+                        <Button x:Name="CancelButton" Grid.Column="1" Style="{StaticResource GhostButton}"
+                                Content="取消" Padding="8,3" Click="Cancel_Click"/>
+                    </Grid>
+                    <ProgressBar x:Name="DownloadBar" Style="{StaticResource PclProgressBar}" Maximum="100"
+                                 Value="0" Margin="0,10,0,0"/>
+                    <TextBlock x:Name="ProgressInfo" Text="" FontSize="11" Margin="0,8,0,0"
+                               Foreground="{DynamicResource TextTertiaryBrush}" TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource FlatCard}" Padding="18" Margin="0,14,0,0">
+                <StackPanel>
+                    <TextBlock Text="版本记录" Style="{StaticResource SectionTitleText}"/>
+                    <TextBlock x:Name="EmptyText" Text="正在加载更新日志 ..." FontSize="12" Margin="0,10,0,0"
+                               TextWrapping="Wrap" Foreground="{DynamicResource TextTertiaryBrush}"
+                               Visibility="Collapsed"/>
+
+                    <ItemsControl x:Name="ReleaseList" Margin="0,6,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+                                        Padding="0,12">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Border Style="{StaticResource Badge}"
+                                                    Background="{DynamicResource AccentLighterBrush}">
+                                                <TextBlock Text="{Binding DisplayVersion}" FontSize="10"
+                                                           Foreground="{DynamicResource AccentTextBrush}"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding ReleaseName}" FontSize="13" FontWeight="SemiBold"
+                                                       Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding PublishedAt}" FontSize="11" Margin="10,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource TextTertiaryBrush}"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Body}" FontSize="12" TextWrapping="Wrap"
+                                                   LineHeight="20" Margin="0,8,0,0"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Text="提示：在线更新会下载对应 Release 里的 zip 包，退出工具箱后自动替换文件并重新启动。发布新版本时，在 GitHub Release 中上传一个以 win 命名的 zip 资源即可。"
+                       Style="{StaticResource HintText}" Margin="0,14,0,8" TextWrapping="Wrap"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,110 @@
+<UserControl x:Class="LXLGameToolbox.UI.Pages.AboutPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:core="clr-namespace:LXLGameToolbox.Core"
+             Background="Transparent">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel MaxWidth="700" HorizontalAlignment="Left">
+
+            <StackPanel>
+                <TextBlock Text="关于" Style="{StaticResource PageTitleText}"/>
+                <TextBlock Text="一个专门收录我自己制作的工具，以及精选第三方游戏修改器的小箱子"
+                           Style="{StaticResource HintText}" Margin="0,6,0,0"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource Card}" Padding="22" Margin="0,16,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Width="64" Height="64" CornerRadius="16" Background="{DynamicResource AccentGradientBrush}"
+                            VerticalAlignment="Top">
+                        <TextBlock Text="LX" Foreground="White" FontSize="24" FontWeight="Bold"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <StackPanel Grid.Column="1" Margin="18,0,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="LXL 游戏工具箱" FontSize="20" FontWeight="SemiBold"/>
+                            <Border Style="{StaticResource Badge}" Background="{DynamicResource AccentLightBrush}"
+                                    Margin="10,0,0,0">
+                                <TextBlock Text="{x:Static core:AppState.VersionText}" FontSize="10" Foreground="{DynamicResource AccentTextBrush}"/>
+                            </Border>
+                        </StackPanel>
+                        <TextBlock Text="像图吧工具箱一样，把常用工具集中到一个入口：一键下载、安装、更新、启动，也能直接接管本机已有的程序。"
+                                   FontSize="12" TextWrapping="Wrap" LineHeight="20" Margin="0,10,0,0"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <TextBlock Text="工具按专区归类：小乐自制工具由我维护更新；游戏修改器专区收录 GameBuff、风灵月影等；联机工具专区收录樱花内网穿透等开服联机辅助工具；磁盘工具专区收录分区助手、DiskGenius；游戏辅助专区收录游戏加加等性能监测工具。"
+                                   FontSize="12" TextWrapping="Wrap" LineHeight="20" Margin="0,6,0,0"
+                                   Foreground="{DynamicResource TextTertiaryBrush}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource FlatCard}" Padding="18" Margin="0,14,0,0">
+                <StackPanel>
+                    <TextBlock Text="已收录的工具" Style="{StaticResource SectionTitleText}"/>
+                    <ItemsControl x:Name="ToolListControl" Margin="0,10,0,0">
+                        <ItemsControl.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" FontSize="12" FontWeight="SemiBold"
+                                                   Margin="0,8,0,4"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ItemsControl.GroupStyle>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+                                        Padding="0,9">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Name}" FontSize="13" FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding Description}" FontSize="11" TextWrapping="Wrap"
+                                                       Margin="0,4,0,0" Foreground="{DynamicResource TextTertiaryBrush}"/>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="1" Text="{Binding Category}" FontSize="11"
+                                                   VerticalAlignment="Center" Margin="12,0,0,0"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                <Button Style="{StaticResource OutlineButton}" Content="LXLPCL 仓库" Padding="14,7"
+                        Click="OpenLxlpcl_Click"/>
+                <Button Style="{StaticResource OutlineButton}" Content="Rust Solo Tools 仓库" Padding="14,7"
+                        Margin="8,0,0,0" Click="OpenRust_Click"/>
+                <Button Style="{StaticResource GhostButton}" Content="GameBuff 官网" Margin="8,0,0,0"
+                        Click="OpenGameBuff_Click"/>
+                <Button Style="{StaticResource GhostButton}" Content="打开数据目录" Margin="8,0,0,0"
+                        Click="OpenData_Click"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource FlatCard}" Padding="18" Margin="0,16,0,0">
+                <StackPanel>
+                    <TextBlock Text="存储位置" Style="{StaticResource SectionTitleText}"/>
+                    <TextBlock x:Name="StorageText" FontSize="11" TextWrapping="Wrap" LineHeight="18"
+                               Margin="0,8,0,0" Foreground="{DynamicResource TextTertiaryBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Text="提示：新增工具只需在 Core\ToolRegistry.cs 的 Tools 列表里追加一条定义（ZoneId 决定归属专区），界面会自动分组生成卡片。"
+                       Style="{StaticResource HintText}" Margin="0,18,0,8" TextWrapping="Wrap"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

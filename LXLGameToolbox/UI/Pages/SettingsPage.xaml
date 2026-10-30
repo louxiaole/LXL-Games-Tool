@@ -1,0 +1,157 @@
+<UserControl x:Class="LXLGameToolbox.UI.Pages.SettingsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel MaxWidth="700" HorizontalAlignment="Left">
+
+            <StackPanel>
+                <TextBlock Text="设置" Style="{StaticResource PageTitleText}"/>
+                <TextBlock Text="调整外观主题、更新检查与下载策略" Style="{StaticResource HintText}" Margin="0,6,0,0"/>
+            </StackPanel>
+
+            <!-- 外观主题 -->
+            <Border Style="{StaticResource Card}" Padding="18" Margin="0,16,0,0">
+                <StackPanel>
+                    <TextBlock Text="外观主题" Style="{StaticResource SectionTitleText}"/>
+                    <TextBlock Text="内置多套动漫主题，一键切换深浅模式、主题色与壁纸"
+                               Style="{StaticResource HintText}" Margin="0,6,0,0"/>
+
+                    <WrapPanel x:Name="PresetPanel" Margin="0,14,0,0"/>
+
+                    <Separator Margin="0,12"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="外观模式" FontSize="13"/>
+                            <TextBlock Text="浅色适合白天，深色适合夜间使用" Style="{StaticResource HintText}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <RadioButton x:Name="LightModeChip" Content="浅色" Tag="light" GroupName="ThemeMode"
+                                         Style="{StaticResource FilterChip}" Margin="0,0,8,0" Checked="Mode_Checked"/>
+                            <RadioButton x:Name="DarkModeChip" Content="深色" Tag="dark" GroupName="ThemeMode"
+                                         Style="{StaticResource FilterChip}" Checked="Mode_Checked"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <StackPanel Margin="0,16,0,0">
+                        <TextBlock Text="主题色" FontSize="13"/>
+                        <WrapPanel x:Name="AccentPanel" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- 背景图片 -->
+            <Border Style="{StaticResource Card}" Padding="18" Margin="0,14,0,0">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="背景图片" Style="{StaticResource SectionTitleText}"/>
+                            <TextBlock Text="内置动漫壁纸，也可以选择本地图片（自动铺满窗口）"
+                                       Style="{StaticResource HintText}" Margin="0,6,0,0"/>
+                        </StackPanel>
+                        <Button Grid.Column="1" Style="{StaticResource OutlineButton}" Content="选择本地图片"
+                                Padding="14,7" VerticalAlignment="Center" Click="PickBackground_Click"/>
+                    </Grid>
+
+                    <WrapPanel x:Name="BackgroundPanel" Margin="0,14,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 常规 -->
+            <Border Style="{StaticResource Card}" Padding="18" Margin="0,14,0,0">
+                <StackPanel>
+                    <TextBlock Text="常规" Style="{StaticResource SectionTitleText}"/>
+
+                    <Grid Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="启动时检查工具更新" FontSize="13"/>
+                            <TextBlock Text="启动后读取 GitHub Releases 的最新版本并标记可更新工具"
+                                       Style="{StaticResource HintText}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                        <CheckBox x:Name="AutoCheckToggle" Grid.Column="1" Style="{StaticResource ToggleSwitch}"
+                                  VerticalAlignment="Center" Checked="AutoCheckToggle_Changed"
+                                  Unchecked="AutoCheckToggle_Changed"/>
+                    </Grid>
+
+                    <Separator Margin="0,16"/>
+
+                    <Grid Margin="0,2,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="下载源" FontSize="13"/>
+                            <TextBlock Text="直连失败时会自动尝试加速镜像，下载完成后会校验压缩包完整性"
+                                       Style="{StaticResource HintText}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                        <ComboBox x:Name="SourceCombo" Grid.Column="1" Style="{StaticResource PclComboBox}"
+                                  Width="190" VerticalAlignment="Center" SelectionChanged="SourceCombo_SelectionChanged">
+                            <ComboBoxItem Content="自动（直连 + 镜像）"/>
+                            <ComboBoxItem Content="仅 GitHub 直连"/>
+                            <ComboBoxItem Content="仅加速镜像"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <Separator Margin="0,16"/>
+
+                    <Grid Margin="0,2,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="桌面快捷方式" FontSize="13"/>
+                            <TextBlock Text="在桌面生成工具箱图标，双击即可直接启动"
+                                       Style="{StaticResource HintText}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                        <Button Grid.Column="1" Style="{StaticResource OutlineButton}" Content="创建桌面快捷方式"
+                                Padding="14,7" VerticalAlignment="Center" Click="CreateShortcut_Click"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- 目录与缓存 -->
+            <Border Style="{StaticResource Card}" Padding="18" Margin="0,14,0,0">
+                <StackPanel>
+                    <TextBlock Text="目录与缓存" Style="{StaticResource SectionTitleText}"/>
+
+                    <StackPanel Margin="0,14,0,0">
+                        <TextBlock Text="数据目录（配置与日志）" Style="{StaticResource CaptionText}"/>
+                        <TextBlock x:Name="DataPathText" Text="—" FontSize="12" Margin="0,4,0,0"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,12,0,0">
+                        <TextBlock Text="工具安装目录" Style="{StaticResource CaptionText}"/>
+                        <TextBlock x:Name="ToolsPathText" Text="—" FontSize="12" Margin="0,4,0,0"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                        <Button Style="{StaticResource OutlineButton}" Content="打开数据目录" Padding="14,7"
+                                Click="OpenData_Click"/>
+                        <Button Style="{StaticResource OutlineButton}" Content="打开工具目录" Padding="14,7"
+                                Margin="8,0,0,0" Click="OpenTools_Click"/>
+                        <Button Style="{StaticResource GhostButton}" Content="清空下载缓存" Margin="8,0,0,0"
+                                Click="ClearCache_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
